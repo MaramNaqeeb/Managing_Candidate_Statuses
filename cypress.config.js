@@ -8,6 +8,6 @@ module.exports = defineConfig({
       // implement node event listeners here
       return require("./cypress/plugins")(on, config);
     },
-    specPattern: "cypress/e2e/OrangeHRM/*.feature",
+    specPattern: "cypress/e2e/test-cases-folder/**/*.feature",
   },
 });
