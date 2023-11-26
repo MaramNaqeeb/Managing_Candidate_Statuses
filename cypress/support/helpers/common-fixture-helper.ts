@@ -3,5 +3,6 @@ class CommonFixtureHelper {
     cy.fixture(filePath).as(fixtureName);
     return cy.get(`@${fixtureName}`);
   }
+  
 }
 export default CommonFixtureHelper;

@@ -9,4 +9,5 @@ export interface candidatePayload {
   lastName: string;
   middleName: string;
   vacancyId: number;
+  
 }

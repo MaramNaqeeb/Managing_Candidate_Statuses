@@ -23,10 +23,11 @@ import {
 import CommonFixtureHelper from "../../../support/helpers/common-fixture-helper";
 import AssertFileContent from "../../../support/helpers/assert-file-content";
 
-const LOGIN_OBJ: Login = new Login();
-const LOGOUT_OBJ: LogOut = new LogOut();
+const LOGIN: Login = new Login();
+const LOGOUT: LogOut = new LogOut();
 const UPLOAD_FILE: UploadFile = new UploadFile();
 const DOWNLOAD_File: DownloadFile = new DownloadFile();
+const API_HELPERS:ApiHelpers=new ApiHelpers()
 
 let filePath: string;
 let uploadedFileName: any;
@@ -35,7 +36,7 @@ BeforeAll(() => {
   // Here I add an employee, jobTitle, and vacancy as prerequisites
   CommonFixtureHelper.loadDataFromFixture("admin.json", "admin").then(
     (admin: any) => {
-      LOGIN_OBJ.loginFUNC(admin.userName, admin.password);
+      LOGIN.loginFUNC(admin.userName, admin.password);
     }
   );
   CommonFixtureHelper.loadDataFromFixture("employee.json", "employee").then(
@@ -45,7 +46,7 @@ BeforeAll(() => {
         lastName: `${emp.lastName}${GenericFunctions.randomNumber()}`,
         employeeId: `${GenericFunctions.randomNumber()}`,
       };
-      ApiHelpers.addEmployee(employeeObject);
+      API_HELPERS.addEmployee(employeeObject);
     }
   );
 
@@ -54,7 +55,7 @@ BeforeAll(() => {
       let jobTitleObject: any = {
         title: `${job}${GenericFunctions.randomNumber()}`,
       };
-      ApiHelpers.addJobTitle(jobTitleObject).then(() => {
+      API_HELPERS.addJobTitle(jobTitleObject).then(() => {
         CommonFixtureHelper.loadDataFromFixture("vacancy.json", "vacancy").then(
           (vacancy: any) => {
             let vacancyObject: any = {
@@ -65,20 +66,20 @@ BeforeAll(() => {
               numOfPositions: vacancy.numOfPositions,
               status: vacancy.status,
             };
-            ApiHelpers.addVacancy(vacancyObject).then(() => {});
+            API_HELPERS.addVacancy(vacancyObject).then(() => {});
           }
         );
       });
     }
   );
-  LOGOUT_OBJ.logout();
+  LOGOUT.logout();
 });
 
 Before(() => {
   // Here I add a candidate and get his/her status up to Interview Scheduled 
   CommonFixtureHelper.loadDataFromFixture("admin.json", "admin").then(
     (admin: any) => {
-      LOGIN_OBJ.loginFUNC(admin.userName, admin.password);
+      LOGIN.loginFUNC(admin.userName, admin.password);
     }
   );
   CommonFixtureHelper.loadDataFromFixture("candidate.json", "candidate").then(
@@ -91,19 +92,19 @@ Before(() => {
         lastName: `${candidate.lastName}${GenericFunctions.randomNumber()}`,
         vacancyId: vacancyId,
       };
-      ApiHelpers.addCandidate(candidateObject);
+      API_HELPERS.addCandidate(candidateObject);
     }
   );
 });
 AfterAll(() => {
   // Here I delete the employee, jobTitle, and vacancy that I created in the BeforeAll
-  ApiHelpers.deleteJob();
-  ApiHelpers.deleteVacancy();
-  ApiHelpers.deleteEmployee();
+  API_HELPERS.deleteJob();
+  API_HELPERS.deleteVacancy();
+  API_HELPERS.deleteEmployee();
 });
 After(() => {
   // Here I delete the candidate that I created in the Before
-  ApiHelpers.deleteCandidate();
+  API_HELPERS.deleteCandidate();
 });
 // First scenario
 Given(
@@ -146,7 +147,7 @@ Then(
 //Second scenario
 Given("The system has a candidate with a hired status", () => {
   // Here I prepare the data to get the candidate's status to hired
-  ApiHelpers.stateShortlistStatus();
+  API_HELPERS.stateShortlistStatus();
   CommonFixtureHelper.loadDataFromFixture("interview.json", "interview").then(
     (interview: any) => {
       let interviewObject: any = {
@@ -155,10 +156,10 @@ Given("The system has a candidate with a hired status", () => {
         interviewTime: interview.interviewTime,
         interviewerEmpNumbers: [empId],
       };
-      ApiHelpers.scheduleInterview(interviewObject).then(() => {
-        ApiHelpers.MarkInterviewPassed();
-        ApiHelpers.offerJob();
-        ApiHelpers.hireCandidate();
+      API_HELPERS.scheduleInterview(interviewObject).then(() => {
+        API_HELPERS.MarkInterviewPassed();
+        API_HELPERS.offerJob();
+        API_HELPERS.hireCandidate();
       });
     }
   );
@@ -195,7 +196,7 @@ When("The admin clicks the download icon next to the candidate.", () => {
 Then(
   "The data in the downloaded file should match the data in the uploaded file.",
   () => {
-    uploadedFileName = "resume.txt";
+    uploadedFileName = filePath.substring(filePath.lastIndexOf("/") + 1);
     AssertFileContent.assertDownloadedFile(uploadedFileName);
   }
 );

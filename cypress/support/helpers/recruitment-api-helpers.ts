@@ -34,7 +34,7 @@ export const URLs = {
 };
 
 export default class ApiHelpers {
-  static addEmployee(payload: EmployeePayload) {
+   addEmployee(payload: EmployeePayload) {
     return cy
       .API("POST", URLs.employee, newEmployeeData(payload))
       .then((response) => {
@@ -42,14 +42,14 @@ export default class ApiHelpers {
       });
   }
 
-  static addJobTitle(payload: JobTitlePayload) {
+   addJobTitle(payload: JobTitlePayload) {
     return cy
       .API("POST", URLs.jobTitle, newjobTitleData(payload))
       .then((response) => {
         jobTitleId = response.body.data.id;
       });
   }
-  static addVacancy(payload: VacancyPayload) {
+   addVacancy(payload: VacancyPayload) {
     return cy
       .API("POST", URLs.vacancy, addVacancyData(payload))
       .then((response) => {
@@ -57,14 +57,14 @@ export default class ApiHelpers {
       });
   }
 
-  static addCandidate(payload: candidatePayload) {
+   addCandidate(payload: candidatePayload) {
     return cy
       .API("POST", URLs.candidate, newCandidateData(payload))
       .then((response) => {
         candidateId = response.body.data.id;
       });
   }
-  static stateShortlistStatus() {
+   stateShortlistStatus() {
     cy.visit(`/web/index.php/recruitment/addCandidate/${candidateId}`);
     return cy.API(
       "PUT",
@@ -72,7 +72,7 @@ export default class ApiHelpers {
       shortlistStatus()
     );
   }
-  static scheduleInterview(payload: InterviewPaload) {
+   scheduleInterview(payload: InterviewPaload) {
     return cy
       .API(
         "POST",
@@ -83,37 +83,38 @@ export default class ApiHelpers {
         interviewId = response.body.data.id;
       });
   }
-  static MarkInterviewPassed() {
+   MarkInterviewPassed() {
     return cy.API(
       "PUT",
       `${baseUrl}/web/index.php/api/v2/recruitment/candidates/${candidateId}/interviews/${interviewId}/pass`,
       InterviewPassedData()
     );
   }
-  static offerJob() {
+   offerJob() {
     return cy.API(
       "PUT",
       `${baseUrl}/web/index.php/api/v2/recruitment/candidates/${candidateId}/job/offer`,
       OfferJobData()
     );
   }
-  static hireCandidate() {
+   hireCandidate() {
     return cy.API(
       "PUT",
       `${baseUrl}/web/index.php/api/v2/recruitment/candidates/${candidateId}/hire`,
       hireCandidateData()
     );
   }
-  static deleteEmployee() {
+   deleteEmployee() {
     cy.API("DELETE", URLs.employee, deleteEmployeeData());
   }
-  static deleteJob() {
+   deleteJob() {
     return cy.API("DELETE", URLs.jobTitle, deleteJobData());
   }
-  static deleteVacancy() {
+   deleteVacancy() {
     return cy.API("DELETE", URLs.vacancy, deleteVacancyData());
   }
-  static deleteCandidate() {
+   deleteCandidate() {
     return cy.API("DELETE", URLs.candidate, deleteCandidateData());
   }
+
 }

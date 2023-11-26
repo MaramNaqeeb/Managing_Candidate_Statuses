@@ -8,12 +8,13 @@ class Interview {
     passedForm: () => cy.get(".orangehrm-card-container > .oxd-text"),
   };
 
+  
   // I use the loadingSpinner to wait until the data gets loaded to prevent the system crash
 
-  loadingData(){
+  loadingData() {
     this.elements.loadingSpinner().should("not.exist");
-
   }
+
   firstResultedButton(buttonContent: string) {
     this.elements
       .buttonsContainer()
@@ -21,6 +22,7 @@ class Interview {
       .eq(0)
       .should("contain", buttonContent);
   }
+
   secondResultedButton(buttonContent: string) {
     this.elements
       .buttonsContainer()
@@ -28,6 +30,7 @@ class Interview {
       .eq(1)
       .should("contain", buttonContent);
   }
+
   thirdResultedButton(buttonContent: string) {
     this.elements
       .buttonsContainer()
@@ -36,42 +39,41 @@ class Interview {
       .should("contain", buttonContent);
   }
 
+
   // Here are the functions used for implementing the interview results feature
 
-  markInterviewPassed() {
+  clickOnMarkInterviewPassedButton() {
     this.elements.passedButton().click({ force: true });
-    this.loadingData()
   }
-  markInterviewFailed() {
-    this.elements.buttonsContainer().children().eq(1).click({ force: true });
-    this.loadingData()
 
+  clickOnMarkInterviewFailedButton() {
+    this.elements.buttonsContainer().children().eq(1).click({ force: true });
   }
-  saveForm(formName: string) {
-    this.elements.passedForm().should("contain", formName);
+
+  saveForm() {
+    this.loadingData();
     this.elements.submitBtn().invoke("show").click();
   }
 
-  assertCandidateStatus(status: string) {
-    this.loadingData()
+
+  checkCandidateStatusIsExist(status: string) {
+    this.loadingData();
     this.elements.passedStatus().should("contain", status);
   }
 
-  buttonsAfterPassedInterview(
-    buttonContent1: string,
-    buttonContent2: string,
-    buttonContent3: string
-  ) {
 
-    this.loadingData()
-    this.firstResultedButton(buttonContent1);
-    this.secondResultedButton(buttonContent2);
-    this.thirdResultedButton(buttonContent3);
-  }
-  buttonsAfterFailedInterview(buttonContent: string) {
-    this.loadingData()
-
+  assertRejectButton(buttonContent: string) {
     this.firstResultedButton(buttonContent);
   }
+
+  assertScheduleInterviewButton(buttonContent: string) {
+    this.secondResultedButton(buttonContent);
+  }
+
+  assertOfferJobButton(buttonContent: string) {
+    this.thirdResultedButton(buttonContent);
+  }
+
 }
 export default Interview;
+

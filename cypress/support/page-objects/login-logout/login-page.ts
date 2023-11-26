@@ -5,11 +5,14 @@ class Login {
     loginBTN: () => cy.get("[type=submit]"),
   };
   
+
   loginFUNC(userName: string, password: string) {
     cy.visit("/");
     this.elements.userName().type(userName),
     this.elements.password().type(password),
     this.elements.loginBTN().click();
   }
+
 }
 export default Login;
+

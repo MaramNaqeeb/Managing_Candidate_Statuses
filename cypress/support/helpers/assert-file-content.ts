@@ -8,5 +8,6 @@ class AssertFileContent {
       });
     });
   }
+  
 }
 export default AssertFileContent;

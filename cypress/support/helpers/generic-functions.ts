@@ -20,5 +20,6 @@ class GenericFunctions {
     let currentDate: any = `${year}-${month}-${day}`;
     return currentDate;
   }
+  
 }
 export default GenericFunctions;

@@ -6,6 +6,7 @@ import { candidateId, empId, jobTitleId, vacancyId } from "./recruitment-api-hel
 import { InterviewPaload } from "../api/payload/interviewPayload";
 
 
+
 export const newEmployeeData = (e?: EmployeePayload): any => {
   let employee: any = {
     empPicture: null,
@@ -17,6 +18,7 @@ export const newEmployeeData = (e?: EmployeePayload): any => {
   return employee;
 };
 
+
 export function newjobTitleData(j?: JobTitlePayload) {
   let job: any = {
     description: "" || j?.description,
@@ -26,6 +28,7 @@ export function newjobTitleData(j?: JobTitlePayload) {
   };
   return job;
 }
+
 export const addVacancyData = (v?: VacancyPayload): any => {
   let vacancy: any = {
     description: "" || v?.description,
@@ -37,6 +40,7 @@ export const addVacancyData = (v?: VacancyPayload): any => {
     status: v?.status,
   };
   return vacancy;
+
 };
 export const newCandidateData = (c?: candidatePayload): any => {
   let addCandidate: any = {
@@ -52,6 +56,7 @@ export const newCandidateData = (c?: candidatePayload): any => {
     vacancyId: c?.vacancyId,
   };
   return addCandidate;
+
 };
 export const shortlistStatus = (): any => {
   let shortlist: any = {
@@ -59,6 +64,7 @@ export const shortlistStatus = (): any => {
   };
   return shortlist;
 };
+
 
 export const scheduleInterviewData = (i?: InterviewPaload): any => {
   let interview: any = {
@@ -70,24 +76,28 @@ export const scheduleInterviewData = (i?: InterviewPaload): any => {
   };
   return interview;
 };
+
 export const InterviewPassedData = (): any => {
   let passed: any = {
     note: null,
   };
   return passed;
 };
+
 export const OfferJobData = (): any => {
   let offer: any = {
     note: null,
   };
   return offer;
 };
+
 export const hireCandidateData = (): any => {
   let hire: any = {
     note: null,
   };
   return hire;
 };
+
 export const deleteEmployeeData = (): any => {
   let deleteEmployee: any = {
     ids: [empId],
@@ -95,21 +105,25 @@ export const deleteEmployeeData = (): any => {
   return deleteEmployee;
 };
 
+
 export const deleteJobData = (): any => {
   let deleteJob: any = {
     ids: [jobTitleId],
   };
   return deleteJob;
 };
+
 export const deleteVacancyData = (): any => {
   let deleteVacancy: any = {
     ids: [vacancyId],
   };
   return deleteVacancy;
 };
+
 export const deleteCandidateData = (): any => {
   let deleteCandidate: any = {
     ids: [candidateId],
   };
   return deleteCandidate;
 };
+

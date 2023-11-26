@@ -4,6 +4,7 @@ export interface InterviewPaload {
   interviewTime: string;
   interviewerEmpNumbers: [];
   note?: string;
+  
 }
 
 

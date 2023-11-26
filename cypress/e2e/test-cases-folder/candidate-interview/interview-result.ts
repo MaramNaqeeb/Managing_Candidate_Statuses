@@ -19,15 +19,16 @@ import {
   candidateId,
 } from "../../../support/helpers/recruitment-api-helpers";
 import CommonFixtureHelper from "../../../support/helpers/common-fixture-helper";
-const INTERVIEW_OBJ: Interview = new Interview();
-const LOGOUT_OBJ: LogOut = new LogOut();
-const LOGIN_OBJ: Login = new Login();
+const INTERVIEW: Interview = new Interview();
+const LOGOUT: LogOut = new LogOut();
+const LOGIN: Login = new Login();
+const API_HELPERS:ApiHelpers=new ApiHelpers()
 
 BeforeAll(() => {
    // Here I add an employee, jobTitle, and vacancy as prerequisites
   CommonFixtureHelper.loadDataFromFixture("admin.json", "admin").then(
     (admin: any) => {
-      LOGIN_OBJ.loginFUNC(admin.userName, admin.password);
+      LOGIN.loginFUNC(admin.userName, admin.password);
     }
   );
   CommonFixtureHelper.loadDataFromFixture("employee.json", "employee").then(
@@ -37,7 +38,7 @@ BeforeAll(() => {
         lastName: `${emp.lastName}${GenericFunctions.randomNumber()}`,
         employeeId: `${GenericFunctions.randomNumber()}`,
       };
-      ApiHelpers.addEmployee(employeeObject);
+      API_HELPERS.addEmployee(employeeObject);
     }
   );
 
@@ -46,7 +47,7 @@ BeforeAll(() => {
       let jobTitleObject: any = {
         title: `${job}${GenericFunctions.randomNumber()}`,
       };
-      ApiHelpers.addJobTitle(jobTitleObject).then(() => {
+      API_HELPERS.addJobTitle(jobTitleObject).then(() => {
         CommonFixtureHelper.loadDataFromFixture("vacancy.json", "vacancy").then(
           (vacancy: any) => {
             let vacancyObject: any = {
@@ -58,13 +59,13 @@ BeforeAll(() => {
               status: vacancy.status,
             };
 
-            ApiHelpers.addVacancy(vacancyObject).then(() => {});
+            API_HELPERS.addVacancy(vacancyObject).then(() => {});
           }
         );
       });
     }
   );
-  LOGOUT_OBJ.logout();
+  LOGOUT.logout();
 });
 
 Before(() => {
@@ -72,7 +73,7 @@ Before(() => {
 
   CommonFixtureHelper.loadDataFromFixture("admin.json", "admin").then(
     (admin: any) => {
-      LOGIN_OBJ.loginFUNC(admin.userName, admin.password);
+      LOGIN.loginFUNC(admin.userName, admin.password);
     }
   );
   CommonFixtureHelper.loadDataFromFixture("candidate.json", "candidate").then(
@@ -85,8 +86,8 @@ Before(() => {
         lastName: `${candidate.lastName}${GenericFunctions.randomNumber()}`,
         vacancyId: vacancyId,
       };
-      ApiHelpers.addCandidate(candidateObject).then(() => {
-        ApiHelpers.stateShortlistStatus();
+      API_HELPERS.addCandidate(candidateObject).then(() => {
+        API_HELPERS.stateShortlistStatus();
         CommonFixtureHelper.loadDataFromFixture(
           "interview.json",
           "interview"
@@ -97,7 +98,7 @@ Before(() => {
             interviewTime: interview.interviewTime,
             interviewerEmpNumbers: [empId],
           };
-          ApiHelpers.scheduleInterview(interviewObject);
+          API_HELPERS.scheduleInterview(interviewObject);
         });
       });
     }
@@ -106,13 +107,13 @@ Before(() => {
 
 AfterAll(() => {
   // Here I delete the employee, jobTitle, and vacancy that I created in the BeforeAll
-  ApiHelpers.deleteJob();
-  ApiHelpers.deleteVacancy();
-  ApiHelpers.deleteEmployee();
+  API_HELPERS.deleteJob();
+  API_HELPERS.deleteVacancy();
+  API_HELPERS.deleteEmployee();
 });
 After(() => {
   // Here I delete the candidate that I created in the Before
-  ApiHelpers.deleteCandidate();
+  API_HELPERS.deleteCandidate();
 });
 // First scenario
 Given(
@@ -123,29 +124,27 @@ Given(
 );
 
 When("The admin clicks the button Mark Interview as Passed", () => {
-  INTERVIEW_OBJ.markInterviewPassed();
+  INTERVIEW.clickOnMarkInterviewPassedButton();
 });
 When(
-  "The admin clicks save in the form entitled {string}",
-  (formName: string) => {
-    INTERVIEW_OBJ.saveForm(formName);
+  "The admin clicks the button save in the Mark Interview Passed form ",
+  () => {
+    INTERVIEW.saveForm();
   }
 );
 
 Then(
   "The status of that candidate should become {string}",
   (status: string) => {
-    INTERVIEW_OBJ.assertCandidateStatus(status);
+    INTERVIEW.checkCandidateStatusIsExist(status);
   }
 );
 Then(
   "The buttons resulted from are {string}, {string}, and {string}",
   (buttonContent1: string, buttonContent2: string, buttonContent3: string) => {
-    INTERVIEW_OBJ.buttonsAfterPassedInterview(
-      buttonContent1,
-      buttonContent2,
-      buttonContent3
-    );
+   INTERVIEW.assertRejectButton(buttonContent1)
+   INTERVIEW.assertScheduleInterviewButton(buttonContent2)
+   INTERVIEW.assertOfferJobButton(buttonContent3)
   }
 );
 // Second scenario
@@ -157,21 +156,21 @@ Given(
 );
 
 When("The admin clicks the button Mark Interview as failed.", () => {
-  INTERVIEW_OBJ.markInterviewFailed();
+  INTERVIEW.clickOnMarkInterviewFailedButton();
 });
 When(
-  "The admin clicks save in the form entitled {string}.",
-  (formName: string) => {
-    INTERVIEW_OBJ.saveForm(formName);
+  "The admin clicks the button save in the Mark Interview Failed form.",
+  () => {
+    INTERVIEW.saveForm();
   }
 );
 
 Then(
   "The status of that candidate should become {string}.",
   (status: string) => {
-    INTERVIEW_OBJ.assertCandidateStatus(status);
+    INTERVIEW.checkCandidateStatusIsExist(status);
   }
 );
 Then("The button resulted from is {string}", (buttonContent: string) => {
-  INTERVIEW_OBJ.buttonsAfterFailedInterview(buttonContent);
+  INTERVIEW.assertRejectButton(buttonContent);
 });

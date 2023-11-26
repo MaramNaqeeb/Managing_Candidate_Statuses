@@ -29,4 +29,5 @@ export interface InterviewResponse {
     historyId: number;
   };
   rels: [];
+  
 }

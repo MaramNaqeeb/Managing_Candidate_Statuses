@@ -4,4 +4,5 @@ export interface EmployeePayload {
   firstName: string;
   lastName: string;
   middleName?: string;
+  
 }
